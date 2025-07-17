@@ -1,0 +1,25 @@
+/* -------------------------------------------------- */
+/* Body */
+
+body {
+    margin: 0px;
+    /* overflow: hidden; */
+    font-family: "myFont";
+    /* background-color: red; */
+}
+
+body.no-scrollbar {
+    overflow: hidden;
+}
+body.hide-scrollbar {
+    overflow: auto;
+}
+
+body.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+::selection {
+    background-color: rgba(var(--colorNCKU), 1);
+    color: white;
+}

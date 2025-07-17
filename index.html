@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>國立成功大學裝置藝術導覽</title>
+        <link rel="icon" href="./media/logo/artCenter_icon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="./assets/css/rootStyle.css">
+        <link rel="stylesheet" href="./assets/css/bodyStyle.css">
+        <link rel="stylesheet" href="./assets/css/indexStyle.css">
+
+    </head>
+
+    <body class="no-scrollbar">
+
+        <div class="index-container">
+            
+            <div class="index-logo">
+                <div class="index-logo-NCKU">
+                    <img src="./media/logo/NCKU_logo.png">
+                </div>
+                <div class="index-logo-artCenter">
+                    <img src="./media/logo/artCenter_logo.png">
+                </div>
+            </div>
+
+            <div class="index-content">
+                <div class="index-title">
+                    <div class="index-title-school">國立成功大學</div>
+                    <div class="index-title-name">裝置藝術導覽</div>
+                </div>
+                <div class="index-slider">
+                    <div class="index-slider-left"></div>
+                    <div class="index-slider-right"></div>
+                    <span class="index-slider-text">點此進入</span>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+
+    <script>
+
+        // Entering
+        const indexLogo = document.getElementsByClassName("index-logo")[0];
+        const indexTitleSchool = document.getElementsByClassName("index-title-school")[0];
+        const indexTitleName = document.getElementsByClassName("index-title-name")[0];
+        const indexSlider = document.getElementsByClassName("index-slider")[0];
+        indexLogo.style.opacity = "0";
+        indexLogo.style.transform = "translate(0, -10px)";
+        indexLogo.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+        indexTitleSchool.style.opacity = "0";
+        indexTitleSchool.style.transform = "translate(0, -10px)";
+        indexTitleSchool.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+        indexTitleName.style.opacity = "0";
+        indexTitleName.style.transform = "translate(0, -10px)";
+        indexTitleName.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+        indexSlider.style.opacity = "0";
+        indexSlider.style.transform = "translate(-100px, 100px)";
+        indexSlider.style.transition = "opacity 0.5s ease-in-out, transform 0.5s ease-in-out";
+
+        setTimeout(() => {
+            indexLogo.style.opacity = "1";
+            indexLogo.style.transform = "translate(0, 0)";
+            setTimeout(() => {
+                indexTitleSchool.style.opacity = "1";
+                indexTitleSchool.style.transform = "translate(0, 0)";
+                setTimeout(() => {
+                    indexTitleName.style.opacity = "1";
+                    indexTitleName.style.transform = "translate(0, 0)";
+                    setTimeout(() => {
+                        indexSlider.style.opacity = "1";
+                        indexSlider.style.transform = "translate(0, 100px)";
+                    }, 500);
+                }, 500);
+            }, 500);
+        }, 0);
+
+        // Leaving
+        const indexSliderLeft = document.getElementsByClassName("index-slider-left")[0];
+        const indexSliderRight = document.getElementsByClassName("index-slider-right")[0];
+        const indexSliderText = document.getElementsByClassName("index-slider-text")[0];
+        const indexContainer = document.getElementsByClassName("index-container")[0];
+        indexSliderLeft.style.transition = "transform 1s ease-in-out";
+        indexSliderText.style.transition = "left 1s ease, opacity 1s ease-in-out";
+        indexContainer.style.transition = "opacity 1s ease-in-out";
+        
+        indexSlider.addEventListener("click", indexLeaving);
+        function indexLeaving() {
+            indexSliderRight.style.width = "0";
+            indexSliderText.style.opacity = "0";
+            indexSliderLeft.style.transform = "scale(10, 20)";
+            setTimeout(() => {
+                indexContainer.style.opacity = "0";
+                setTimeout(() => {
+                    window.location.href = "./pages/homepage.html";
+                }, 1000);
+            }, 1000);
+        }
+
+    </script>
+    
+</html>

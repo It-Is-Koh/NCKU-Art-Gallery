@@ -1,0 +1,16 @@
+/* -------------------------------------------------- */
+/* Whole webpage */
+
+@font-face {
+    font-family: "myFont";
+    src: url("../../media/font/ThePeakFontBeta_V0_101.ttf");
+}
+
+@font-face {
+    font-family: "titleFont";
+    src: url("../../media/font/Running_Script.ttf");
+}
+
+:root {
+    --colorNCKU: 163, 31, 52;
+}

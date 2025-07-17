@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>國立成功大學裝置藝術導覽</title>
+        <link rel="icon" href="../media/logo/artCenter_icon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="../assets/css/rootStyle.css">
+        <link rel="stylesheet" href="../assets/css/bodyStyle.css">
+        <link rel="stylesheet" href="../assets/css/campusStyle.css">
+        <link rel="stylesheet" href="../assets/css/navigationStyle.css">
+
+        <script src="../assets/js/campus_pic.js"></script>
+        <script src="../assets/js/artworks_json.js"></script>
+
+    </head>
+
+    <body class="hide-scrollbar">
+
+        <div class="container">
+            <div class="cards"></div>
+        </div>
+
+        <div class="scroll">
+            <div class="scroll-scope"></div>
+            <div class="scroll-cards"></div>
+        </div>
+
+        <div class="title">
+            <div>自強校區</div>
+        </div>
+
+        <div class="description">
+            <div class="description-close-region">
+                <div class="description-cursor">點擊退出</div>
+            </div>
+            <div class="description-contents"></div>
+        </div>
+
+        <div class="navigation-button">
+            <div class="navigation-button-open">選單</div>
+            <div class="navigation-button-close">關閉</div>
+            <div class="navigation-button-logo">
+                <div class="navigation-button-logo-bar1"></div>
+                <div class="navigation-button-logo-bar2"></div>
+                <div class="navigation-button-logo-bar3"></div>
+            </div>
+        </div>
+        <div class="navigation">
+            <div class="navigation-close-region"></div>
+            <div class="navigation-decoration-line"></div>
+            <div class="navigation-decoration-line"></div>
+            <div class="navigation-sidebar">
+                <div class="navigation-links">
+                    <div class="navigation-links-title">
+                        <div class="navigation-link"><a href="../index.html"><div class="navigation-links-underline">主頁</div></a></div>
+                        <div class="navigation-link"><a href="../pages/contactUs.html"><div class="navigation-links-underline">聯絡我們</div></a></div>    
+                    </div>
+                    <div class="navigation-links-campus">
+                        <div class="navigation-link"><a href="../pages/campusKF.html"><div class="navigation-links-underline">光復校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusCK.html"><div class="navigation-links-underline">成功校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusTC.html" class="current-site"><div class="navigation-links-underline">自強校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusLH.html"><div class="navigation-links-underline">力行校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusCH.html"><div class="navigation-links-underline">成杏校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusSL.html"><div class="navigation-links-underline">勝利校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusOTHER.html"><div class="navigation-links-underline">分校區</div></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation-title">自強校區</div>
+        </div>
+
+        <div class="cover"></div>
+
+    </body>
+
+    <script>
+
+        const campusArray = campus.TC_pic;
+
+        // --------------------------------------------------
+        // Basic function
+
+        // Prevent scroll restoration
+        history.scrollRestoration = "manual";
+        // window.onload = () => {
+        //     window.scrollTo(0, 0);
+        // };
+
+        // Parallax rffect
+        const slowColumn = document.querySelector('.scroll-cards');
+        window.addEventListener('scroll', () => {
+            let scrollPosition = window.scrollY;
+            slowColumn.style.transform = `translateY(${scrollPosition * -0.2}px)`;
+        });
+
+        // --------------------------------------------------
+        // Artwork cards
+
+        const cards = document.getElementsByClassName("cards")[0];
+        const scrollCards = document.getElementsByClassName("scroll-cards")[0];
+        artworksData.forEach(artwork => {
+            if (campusArray.includes(artwork.NO)) {
+                // Cards
+                let artworkCardsHTML = `
+                    <div class="card" id="card${artwork.NO}">
+                        <a onclick="showDescription(this)">
+                            <div class="card-image">
+                                <picture>
+                                    <img src="../media/pic/${artwork.NO}.jpg" alt="${artwork.Name}/${artwork.Artist}">
+                                </picture>
+                            </div>
+                            <div class="card-info">
+                                <div class="card-title">
+                                    <div class="card-name">${artwork.Name}</div>
+                                    <div class="card-artist">${artwork.Artist}</div>
+                                </div>
+                                <div class="card-details">
+                `;
+                artworkCardsHTML += artwork.Year ? `<div class="card-tags">${artwork.Year}</div>` : '';
+                artworkCardsHTML += artwork.Type ? `<div class="card-tags">${artwork.Type}</div>` : '';
+                artworkCardsHTML += artwork.Material ? `<div class="card-tags">${artwork.Material}</div>` : '';
+                artworkCardsHTML += artwork.Dimensions ? `<div class="card-tags">${artwork.Dimensions}</div>` : '';
+                artworkCardsHTML += `
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                cards.innerHTML += artworkCardsHTML;
+                // Scroll-cards
+                let artworkScrollCardsHTML = `
+                    <div class="scroll-card">
+                        <a href="#card${artwork.NO}">
+                            <div class="scroll-card-image">
+                                <picture>
+                                    <img src="../media/pic/${artwork.NO}.jpg">
+                                </picture>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                scrollCards.innerHTML += artworkScrollCardsHTML;
+            }
+        });
+        cards.innerHTML += `<div id="nothing" style="height: 100px"></div>`;
+
+        // --------------------------------------------------
+        // Artwork description
+
+        const description = document.getElementsByClassName("description")[0];
+        const descriptionContents = document.getElementsByClassName("description-contents")[0];
+        
+        description.style.opacity = "0";
+        description.style.transition = "opacity 0.5s ease-in-out";
+        descriptionContents.style.marginTop = "50px";
+        descriptionContents.style.opacity = "0";
+        descriptionContents.style.transition = "margin-top 0.5s ease-in-out, opacity 0.5s ease-in-out";
+
+        function showDescription(element) {
+            let artworkId = element.parentElement.id;
+            let artworkNo = artworkId.replace(/\D/g, "");
+
+            let artwork = artworksData.find(art => art.NO === artworkNo);
+            let artworkDescriptionContentsHTML = `
+                <div class="description-image">
+                    <picture>
+                        <img src="../media/pic/${artwork.NO}.jpg" alt="${artwork.Name}/${artwork.Artist}">
+                    </picture>
+                </div>
+                <div class="description-info">
+                    <div class="description-name">${artwork.Name}</div>
+                    <div class="description-artist">${artwork.Artist}</div>
+                    <table>
+                `;
+            artworkDescriptionContentsHTML += artwork.Year
+                ? `
+                <tr>
+                    <th>創作年份</th>
+                    <td>${artwork.Year}</td>
+                </tr>`
+                : '';
+            artworkDescriptionContentsHTML += artwork.Type
+                ? `
+                <tr>
+                    <th>類別</th>
+                    <td>${artwork.Type}</td>
+                </tr>`
+                : '';
+            artworkDescriptionContentsHTML += artwork.Material
+                ? `
+                <tr>
+                    <th>媒材</th>
+                    <td>${artwork.Material}</td>
+                </tr>`
+                : '';
+            artworkDescriptionContentsHTML += artwork.Dimensions
+                ? `
+                <tr>
+                    <th>尺寸</th>
+                    <td>${artwork.Dimensions}</td>
+                </tr>`
+                : '';
+            artworkDescriptionContentsHTML += `
+                        </table>
+                    <div class="description-details">${artwork.Description}</div>
+                </div>
+            `;
+
+            descriptionContents.innerHTML = artworkDescriptionContentsHTML;
+
+            document.querySelector(".description-details").innerHTML = 
+            document.querySelector(".description-details").innerHTML.replace(/\n/g, "<br>");
+
+            description.style.display = "flex";
+
+            // Animation
+            setTimeout(() => {
+                description.style.opacity = "1";
+                descriptionContents.style.marginTop = "0px";
+                descriptionContents.style.opacity = "1";
+            }, 10);
+        }
+
+        // Custom description-close-region cursor
+
+        const descriptionCloseRegion = document.getElementsByClassName("description-close-region")[0];
+
+        const myCursor = document.getElementsByClassName("description-cursor")[0];
+        function customCursor(event){
+            myCursor.style.top = event.clientY + "px";
+            myCursor.style.left = event.clientX + "px";
+        }
+        descriptionCloseRegion.addEventListener("mousemove", customCursor);
+
+        function closeDescription(){
+            description.style.opacity = "0";
+            descriptionContents.style.marginTop = "50px";
+            descriptionContents.style.opacity = "0";
+            setTimeout(() => {
+                description.style.display = "none";
+            }, 500);
+        }
+        descriptionCloseRegion.addEventListener("click", closeDescription);
+
+        // --------------------------------------------------
+        // Navigation sidebar
+
+        const navigationButton = document.getElementsByClassName("navigation-button")[0];
+        const navigationButtonOpen = document.getElementsByClassName("navigation-button-open")[0];
+        const navigation = document.getElementsByClassName("navigation")[0];
+        const navigationCloseRegion = document.getElementsByClassName("navigation-close-region")[0];
+        const navigationSidebar = document.getElementsByClassName("navigation-sidebar")[0];
+        const navigationDecorationLine = document.getElementsByClassName("navigation-decoration-line");
+        const navigationButtonClose = document.getElementsByClassName("navigation-button-close")[0];
+        const navigationButtonLogo = document.getElementsByClassName("navigation-button-logo")[0];
+        const navigationTitle = document.getElementsByClassName("navigation-title")[0];
+
+        navigation.style.display = "none";
+        navigationCloseRegion.style.opacity = "0";
+        navigationCloseRegion.style.transition = "opacity 0.5s ease-in-out";
+        navigationSidebar.style.width = "0px";
+        // navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.4, 0, 1, 1)";
+        // navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+        // navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+        navigationButtonClose.style.display = "none";
+        navigationButtonClose.style.opacity = "0";
+        navigationButtonClose.style.transition = "opacity 0.5s ease-in-out";
+        navigationTitle.style.opacity = "0";
+        navigationTitle.style.transition = "opacity 0.5s ease-in-out";
+
+        function openNavigation(){
+            navigation.style.display = "block";
+            navigationButtonClose.style.display = "block";
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            setTimeout(() => {
+                navigationCloseRegion.style.opacity = "1";
+                navigationSidebar.style.width = "600px";
+                navigationDecorationLine[0].style.right = "605px";
+                navigationDecorationLine[1].style.right = "615px";
+                navigationButtonClose.style.opacity = "1";
+                navigationTitle.style.opacity = "1";
+            }, 10);
+        }
+
+        function closeNavigation(){
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationCloseRegion.style.opacity = "0";
+            navigationSidebar.style.width = "0px";
+            navigationDecorationLine[0].style.right = "0px";
+            navigationDecorationLine[1].style.right = "0px";
+            navigationButtonClose.style.opacity = "0";
+            navigationTitle.style.opacity = "0";
+            setTimeout(() => {
+                navigation.style.display = "none";
+                navigationButtonClose.style.display = "none";
+            }, 500);
+        }
+        navigationCloseRegion.addEventListener("click", closeNavigation);
+
+        function navigationToggle() {
+            if (navigation.style.display == "none") {
+                openNavigation();
+            }
+            else {
+                closeNavigation();
+            }
+            navigationButtonLogo.classList.toggle("navigation-button-logo_change");
+        }
+        navigationButton.addEventListener("click", navigationToggle);
+
+        // --------------------------------------------------
+        // Entering animation
+
+        // Container
+        const container = document.getElementsByClassName("container")[0];
+        const cardImages = document.querySelectorAll('.card img');
+        const cardInfos = document.querySelectorAll('.card-info');
+
+        container.style.top = "150vh";
+        container.style.transform = "scale(0.5)";
+        container.style.transition = "top 2s ease-in-out, transform 1s ease-in-out";
+        cardImages.forEach(cardImage => {
+            cardImage.style.transform = "scale(1.5)";
+        });
+        cardInfos.forEach(cardInfo => {
+            cardInfo.style.opacity = "0";
+            cardInfo.style.transition = "opacity 0.5s ease-in-out";
+        });
+
+        // Scroll
+        const scrollContainer = document.getElementsByClassName("scroll")[0];
+
+        scrollContainer.style.top = "60vh";
+        scrollContainer.style.transform = "scale(0.5)";
+        scrollContainer.style.opacity = "0";
+        scrollContainer.style.transition = "opacity 0.5s ease-in-out, scale 0.5s ease-in-out, top 0.5s ease-in-out";
+
+        // Navigation
+        navigationButton.style.opacity = "0";
+        navigationButton.style.transition = "opacity 0.5s ease-in-out";
+
+        // Title
+        const title = document.getElementsByClassName("title")[0];
+        title.style.opacity = "0";
+        title.style.transition = "opacity 0.5s ease-in-out";
+
+        // Cover
+        const cover = document.getElementsByClassName("cover")[0];
+        cover.style.display = "block";
+
+        // Body
+        document.body.classList.remove("hide-scrollbar");
+        document.body.classList.add("no-scrollbar");
+
+        // Animation
+        setTimeout(() => {
+            container.style.top = "-100vh";
+            setTimeout(() => {
+                container.style.top = "0vh";
+                setTimeout(() => {
+                    container.style.transform = "scale(1)";
+                    cardImages.forEach(cardImage => {
+                        cardImage.style.transform = "scale(1)";
+                    });
+                    setTimeout(() => {
+                        cardInfos.forEach(cardInfo => {
+                            cardInfo.style.opacity = "1";
+                        });
+                        scrollContainer.style.opacity = "1";
+                        scrollContainer.style.transform = "scale(1)";
+                        scrollContainer.style.top = "40vh";
+                        navigationButton.style.opacity = "1";
+                        title.style.opacity = "1";
+                        setTimeout(() => {
+                            cover.style.display = "none";
+                            document.body.classList.remove("no-scrollbar");
+                            document.body.classList.add("hide-scrollbar");
+                        }, 500);
+                    }, 500);
+                }, 1500);
+            }, 2000);
+        }, 10);
+
+        // --------------------------------------------------
+        // Leaving animation
+
+        // Late leaving
+        document.querySelectorAll(".navigation-link a").forEach(link => {
+            link.addEventListener("click", event => {
+                event.preventDefault(); // Prevent immediate navigation
+                if (!link.classList.contains('current-site')) {
+                    const href = link.href;
+                    campusLeaving(href);
+                }
+            });
+        });
+
+        function campusLeaving(href) {
+            closeNavigation();
+            closeDescription();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            cover.style.display = "block";
+            document.body.classList.remove("hide-scrollbar");
+            document.body.classList.add("no-scrollbar");
+            setTimeout(() => {
+                title.style.opacity = "0";
+                navigationButton.style.opacity = "0";
+                scrollContainer.style.top = "100vh";
+                cardInfos.forEach(cardInfo => {
+                    cardInfo.style.opacity = "0";
+                });
+                setTimeout(() => {
+                    container.style.transform = "scale(2)";
+                    container.style.top = `220px`;
+                    // cardImages.forEach(cardImage => {
+                    //     cardImage.style.transform = "scale(1.5)";
+                    // });
+                    setTimeout(() => {
+                        container.style.transform = "scale(0.5)";
+                        cardImages.forEach(cardImage => {
+                            cardImage.style.transform = "scale(1.5)";
+                        });
+                        setTimeout(() => {
+                            const cardCount = document.querySelectorAll("div.card").length;
+                            console.log(cardCount);
+                            container.style.transition = `top ${cardCount * 0.3}s cubic-bezier(0.8, 0, 1, 1), transform 1s ease-in`;
+                            container.style.top = `-${cardCount * 300 + 600}px`;
+                            console.log(href);
+                            setTimeout(() => {
+                                window.location.href = href;
+                            }, cardCount * 300);
+                        }, 1000);
+                    }, 1000);
+                }, 500);
+            }, 500);
+        }
+
+    </script>
+
+</html>

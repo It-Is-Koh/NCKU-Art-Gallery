@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>國立成功大學裝置藝術導覽</title>
+    <link rel="icon" href="../media/logo/artCenter_icon.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="../assets/css/rootStyle.css">
+    <link rel="stylesheet" href="../assets/css/bodyStyle.css">
+    <link rel="stylesheet" href="../assets/css/homepageStyle.css">
+    <link rel="stylesheet" href="../assets/css/navigationStyle.css">
+
+    <script src="../assets/js/campus_pic.js"></script>
+    <script src="../assets/js/artworks_json.js"></script>
+    <script src="../assets/js//puzzle_pic.js"></script>
+
+</head>
+
+<body class="no-scrollbar">
+    
+    <div id="first_quadrant"></div>
+    <div class="description">
+        <div class="description-close-region">
+            <div class="description-cursor">點擊退出</div>
+        </div>
+        <div class="homepage_description-contents"></div>
+    </div>
+
+    <div class="navigation-button">
+        <div class="navigation-button-open">選單</div>
+        <div class="navigation-button-close">關閉</div>
+        <div class="navigation-button-logo">
+            <div class="navigation-button-logo-bar1"></div>
+            <div class="navigation-button-logo-bar2"></div>
+            <div class="navigation-button-logo-bar3"></div>
+        </div>
+    </div>
+    <div class="navigation">
+        <div class="navigation-close-region"></div>
+        <div class="navigation-decoration-line"></div>
+        <div class="navigation-decoration-line"></div>
+        <div class="navigation-sidebar">
+            <div class="navigation-links">
+                <div class="navigation-links-title">
+                    <div class="navigation-link"><a href="../index.html"><div class="navigation-links-underline">主頁</div></a></div>
+                    <div class="navigation-link"><a href="../pages/contactUs.html"><div class="navigation-links-underline">聯絡我們</div></a></div>    
+                </div>
+                <div class="navigation-links-campus">
+                    <div class="navigation-link"><a href="../pages/campusKF.html" class="current-campus"><div class="navigation-links-underline">光復校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusCK.html"><div class="navigation-links-underline">成功校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusTC.html"><div class="navigation-links-underline">自強校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusLH.html"><div class="navigation-links-underline">力行校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusCH.html"><div class="navigation-links-underline">成杏校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusSL.html"><div class="navigation-links-underline">勝利校區</div></a></div>
+                    <div class="navigation-link"><a href="../pages/campusOTHER.html"><div class="navigation-links-underline">分校區</div></a></div>
+                </div>
+            </div>
+        </div>
+        <div class="navigation-title"></div>
+    </div>
+
+    <script>
+
+        const homepageContainer = document.getElementById("first_quadrant");
+        homepageContainer.style.opacity = "0";
+        homepageContainer.style.transition = "opacity 1s ease-in-out";
+
+        const navigationButton = document.getElementsByClassName("navigation-button")[0];
+        navigationButton.style.opacity = "0";
+
+        // const navigationButtonOpen = document.getElementsByClassName("navigation-button-open")[0];
+        // navigationButtonOpen.style.opacity = "0";
+
+        // --------------------------------------------------
+        // Artwork description
+
+        // 隨機生成範圍內的數值
+        function RandomSize(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // 隨機方向移動
+        function RandomDirectionMovement(img, containerWidth, containerHeight, interval) {
+            let x = parseFloat(img.style.left) || 0; // 初始位置 X
+            let y = parseFloat(img.style.top) || 0;  // 初始位置 Y
+
+            // 設定平滑動畫效果
+            img.style.transition = `left ${interval}ms linear,top  ${interval}ms linear`;
+
+            setInterval(() => {
+                // 隨機角度
+                const angle = Math.random() * 360;
+                const speed = 50; // 單次移動距離
+
+                // 計算新位置
+                const dx = speed * Math.cos(angle * Math.PI / 180);
+                const dy = speed * Math.sin(angle * Math.PI / 180);
+
+                // 更新位置並檢查邊界
+                x += dx;
+                y += dy;
+
+                // 限制在容器範圍內
+                x = Math.max(0, Math.min(containerWidth - img.width, x));
+                y = Math.max(0, Math.min(containerHeight - img.height, y));
+
+                // 設定新位置
+                img.style.left = `${x}px`;
+                img.style.top = `${y}px`;
+            }, interval); // 動畫間隔
+        }
+
+       function loadpic(random_pic_15){
+        // console.log(random_pic_15)
+        const container = document.getElementById("first_quadrant");
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        const images =  random_pic_15;
+        // console.log(images)
+        let n=0
+        images.forEach(function(src) {
+            const img = new Image();
+            // console.log(src);
+            img.onload = function addImage()  {
+                // console.log(src)
+                const fileName=src.replace("../media/","").replace("/", "").replace(".jpg","");
+
+                n+=1;
+               
+                upper_bound=containerWidth/6;
+                lower_bound=containerWidth/12;
+                if (img.naturalWidth > img.naturalHeight) {
+                    img_width = RandomSize(lower_bound,  upper_bound); // 隨機寬度
+                    img_height = img_width * img.naturalHeight / img.naturalWidth;
+                } else {
+                    img_height = RandomSize(lower_bound,  upper_bound); // 隨機高度
+                    img_width = img_height * img.naturalWidth / img.naturalHeight;
+                }
+                const top = Math.random() * (containerHeight - img_height);
+                const left = Math.random() * (containerWidth - img_width);
+
+                img.style.width = `${img_width}px`;
+                img.style.height = `${img_height}px`;
+                img.style.top = `${top}px`;
+                img.style.left = `${left}px`;
+                img.classList= ` ${fileName} puzzle_pic`;
+                
+                img.setAttribute("onclick","selected(this)");
+                
+                let dick = document.createElement("div");
+                dick.appendChild(img);
+
+                container.appendChild(dick);
+
+                // 隨機生成 1-5 秒的動畫間隔
+                const randomInterval = Math.random() * 4000 + 1000; // 1000ms ~ 5000ms
+                RandomDirectionMovement(img, containerWidth, containerHeight, randomInterval);
+            };
+            img.src = src;
+        });
+    }
+    var temp_save="";
+   
+    function selected(element){
+    //   console.log(`click: ${element.classList}`)
+        
+        if (element.classList[2]=="select_pic"){         
+            element.classList.remove("select_pic");
+            temp_save="";
+           
+        }
+        else{          
+            element.classList.add("select_pic");
+            if(element.classList[0]==temp_save ){
+                // var zoomin_div=element.parentElement
+                // console.log(`ZZZ:${zoomin_div}`)
+                let pic_num=element.classList[0];
+                // console.error(element.classList)
+                // console.log("!!!!!!")
+                // console.log(pic_num)
+                showDescription_Homepage(pic_num);
+                var a=document.getElementsByClassName(temp_save);
+                // console.log(`成功圖片${a}  ${a.length}`);
+
+                let len=a.length-1;
+                for (len;len>=0;len--){ 
+                    // console.log(len)
+                    if(a[len].classList.contains("select_pic")){
+                        a[len].parentElement.remove()
+                        // console.log("remove succ")
+                    }}
+                // element.remove();
+                // a[0].remove();
+                temp_save="";
+
+                ///新增圖片
+                var vvv=getRandomPic(1)
+                // console.log(`add pic:${vvv}`)
+                loadpic(vvv);
+                // console.log(`add pic:${loadpic(1)}`)
+
+            }
+            else{//
+                
+                if(temp_save){
+                var a=document.getElementsByClassName(temp_save)
+                // console.log(a)
+                a[0].classList.remove("select_pic");
+                a[1].classList.remove("select_pic");
+                element.classList.remove("select_pic");//
+                temp_save="";}
+                else{              
+                temp_save=element.classList[0];
+                
+                }
+            }
+            
+            // console.log(`click2: ${element.classList}`)
+            // console.log(`temp_save=${temp_save}`)
+        }
+        }
+        
+        loadpic(random_pic_15);
+        // console.log("THERE")
+        // console.log(random_pic_15);
+
+        // --------------------------------------------------
+        // Artwork description
+
+        const description = document.getElementsByClassName("description")[0];
+        const descriptionContents = document.getElementsByClassName("homepage_description-contents")[0];
+        
+        description.style.opacity = "0";
+        description.style.transition = "opacity 0.5s ease-in-out";
+        descriptionContents.style.marginTop = "50px";
+        descriptionContents.style.opacity = "0";
+        descriptionContents.style.transition = "margin-top 0.5s ease-in-out, opacity 0.5s ease-in-out";
+
+        function showDescription_Homepage(picClass) {
+            // let artworkId = element.parentElement.id;
+            // console.error(picClass);
+            let artworkNo = picClass.replace("pic", "");
+            // console.log(artworkNo);
+           
+            let artwork = artworksData.find(art => art.NO === artworkNo);
+            let campus_text="";
+            let campus_link="";
+            var campus_code=findCampus(artworkNo)
+
+            // console.log(campus_code)
+            if (campus_code=="KF_pic"){campus_text="光復校區"; campus_link="./campusKF.html"}
+            else if (campus_code=="CK_pic"){campus_text="成功校區";campus_link="./campusCK.html";}
+            else if (campus_code=="TC_pic"){campus_text="自強校區";campus_link="./campusTC.html";}
+            else if (campus_code=="LH_pic"){campus_text="力行校區";campus_link="./campusLH.html";}
+            else if (campus_code=="CH_pic"){campus_text="成杏校區";campus_link="./campusCH.html";}
+            else if (campus_code=="SL_pic"){campus_text="勝利校區";campus_link="./campusSL.html";}
+            else{campus_text="分校區"; campus_link="./campusOTHER.html";}
+            // console.log(campus_text)
+            
+            let artworkDescriptionContentsHTML = `
+            <div class= "homepage_description-out">
+                <div class="homepage_description-info">
+                    <div class="homepage_description-image">
+                        <picture>
+                            <img src="../media/pic/${artwork.NO}.jpg" alt="${artwork.Name}/${artwork.Artist}">
+                        </picture>
+                    </div>
+                    <table>
+                        <tr><th><div class="description-name">${artwork.Name}</div></th></tr>
+                        <tr><td><div class="description-artist">${artwork.Artist}</div></td></tr>
+                        <tr>
+                            <td align='center'>${artwork.Year} / 
+                `;
+            artworkDescriptionContentsHTML += artwork.Type ? `${artwork.Type} / ` : '';
+            artworkDescriptionContentsHTML += `
+                                ${artwork.Material} / ${artwork.Dimensions}
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="homepage_description-details">${artwork.Description}</div><br>
+                    <div class="slider-container">
+                        <div class="slider-content">
+                            <div align="right"><a href=${campus_link} class="description-link">${campus_text}</a></div>
+                            <div align="right"><a href=${campus_link} class="description-link">${campus_text}</a></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            `;
+
+            descriptionContents.innerHTML = artworkDescriptionContentsHTML;
+
+            document.querySelector(".homepage_description-details").innerHTML = 
+            document.querySelector(".homepage_description-details").innerHTML.replace(/\n/g, "<br>");
+
+            description.style.display = "flex";
+
+            // Animation
+            setTimeout(() => {
+                description.style.opacity = "1";
+                descriptionContents.style.marginTop = "0px";
+                descriptionContents.style.opacity = "1";
+            }, 0);
+
+            // Link leaving page event
+            document.querySelectorAll("a.description-link").forEach(link => {
+                link.addEventListener("click", event => {
+                    event.preventDefault(); // Prevent immediate navigation
+                    if (!link.classList.contains('current-site')) {
+                        const href = link.href;
+                        homepageContainer.style.opacity = "0";
+                        navigationButton.style.opacity = "0";
+                        closeNavigation();
+                        closeDescription();
+                        setTimeout(() => {
+                            window.location.href = href;
+                        }, 1500);
+                    }
+                });
+            });
+        }
+
+        // Custom description-close-region cursor
+
+        const descriptionCloseRegion = document.getElementsByClassName("description-close-region")[0];
+
+        const myCursor = document.getElementsByClassName("description-cursor")[0];
+        function customCursor(event){
+            myCursor.style.top = event.clientY + "px";
+            myCursor.style.left = event.clientX + "px";
+        }
+        descriptionCloseRegion.addEventListener("mousemove", customCursor);
+
+        function closeDescription(){
+            description.style.opacity = "0";
+            descriptionContents.style.marginTop = "50px";
+            descriptionContents.style.opacity = "0";
+            setTimeout(() => {
+                description.style.display = "none";
+            }, 1000);
+        }
+        descriptionCloseRegion.addEventListener("click", closeDescription);
+
+        // showDescription_Homepage("pic25");
+
+        // --------------------------------------------------
+        // Navigation sidebar
+
+        const navigation = document.getElementsByClassName("navigation")[0];
+        const navigationCloseRegion = document.getElementsByClassName("navigation-close-region")[0];
+        const navigationSidebar = document.getElementsByClassName("navigation-sidebar")[0];
+        const navigationDecorationLine = document.getElementsByClassName("navigation-decoration-line");
+        const navigationButtonClose = document.getElementsByClassName("navigation-button-close")[0];
+        const navigationButtonLogo = document.getElementsByClassName("navigation-button-logo")[0];
+        const navigationTitle = document.getElementsByClassName("navigation-title")[0];
+
+        navigation.style.display = "none";
+        navigationCloseRegion.style.opacity = "0";
+        navigationCloseRegion.style.transition = "opacity 0.5s ease-in-out";
+        navigationSidebar.style.width = "0px";
+        // navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.4, 0, 1, 1)";
+        // navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+        // navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+        navigationButtonClose.style.display = "none";
+        navigationButtonClose.style.opacity = "0";
+        navigationButtonClose.style.transition = "opacity 0.5s ease-in-out";
+        navigationTitle.style.opacity = "0";
+        navigationTitle.style.transition = "opacity 0.5s ease-in-out";
+
+        function openNavigation(){
+            navigation.style.display = "block";
+            navigationButtonClose.style.display = "block";
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            setTimeout(() => {
+                navigationCloseRegion.style.opacity = "1";
+                navigationSidebar.style.width = "600px";
+                navigationDecorationLine[0].style.right = "605px";
+                navigationDecorationLine[1].style.right = "615px";
+                navigationButtonClose.style.opacity = "1";
+                navigationTitle.style.opacity = "1";
+            }, 0);
+        }
+
+        function closeNavigation(){
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationCloseRegion.style.opacity = "0";
+            navigationSidebar.style.width = "0px";
+            navigationDecorationLine[0].style.right = "0px";
+            navigationDecorationLine[1].style.right = "0px";
+            navigationButtonClose.style.opacity = "0";
+            navigationTitle.style.opacity = "0";
+            setTimeout(() => {
+                navigation.style.display = "none";
+                navigationButtonClose.style.display = "none";
+            }, 500);
+        }
+        navigationCloseRegion.addEventListener("click", closeNavigation);
+
+        function navigationToggle() {
+            if (navigation.style.display == "none") {
+                openNavigation();
+            }
+            else {
+                closeNavigation();
+            }
+            navigationButtonLogo.classList.toggle("navigation-button-logo_change");
+        }
+        navigationButton.addEventListener("click", navigationToggle);
+
+        navigationButton.style.opacity = "0";
+        navigationButton.style.transition = "opacity 0.5s ease-in-out";
+
+        // --------------------------------------------------
+        // Entering
+
+        setTimeout(() => {
+            homepageContainer.style.opacity = "1";
+            navigationButton.style.opacity = "1";
+        }, 500);
+
+        // --------------------------------------------------
+        // Leaving
+
+        // Navigation late leaving
+        document.querySelectorAll(".navigation-link a").forEach(link => {
+            link.addEventListener("click", event => {
+                event.preventDefault(); // Prevent immediate navigation
+                if (!link.classList.contains('current-site')) {
+                    const href = link.href;
+                    homepageContainer.style.opacity = "0";
+                    navigationButton.style.opacity = "0";
+                    closeNavigation();
+                    closeDescription();
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 1500);
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>

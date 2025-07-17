@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>國立成功大學裝置藝術導覽</title>
+        <link rel="icon" href="../media/logo/artCenter_icon.png" type="image/x-icon">
+
+        <link rel="stylesheet" href="../assets/css/rootStyle.css">
+        <link rel="stylesheet" href="../assets/css/bodyStyle.css">
+        <link rel="stylesheet" href="../assets/css/contactUsStyle.css">
+        <link rel="stylesheet" href="../assets/css/navigationStyle.css">
+
+        <!-- <script src="../assets/js/campus_pic.js"></script>
+        <script src="../assets/js/artworks_json.js"></script> -->
+
+        <script>
+
+            function validateForm(event) {
+                event.preventDefault();
+            }
+
+        </script>
+
+    </head>
+
+    <body class="no-scrollbar">
+
+        <div id="contact-pic">
+            <img src="../media/logo/NCKUsausage.png">
+        </div>
+
+        <div id="contact-container">
+            <div id="contact">
+                <h2 id="contact-title">聯絡我們</h2>
+                <p id="contact-alter">* 以下欄位均為必填</p>
+                <form name="contactme" id="contact_form" onsubmit="validateForm(event)">
+                    <label>*姓名 :<input name="infor_name"  required></label><br>
+                    <label>*電話:<input name="infor_phone" type="tel"  required></label> <br>
+                    <label>*電子郵件:<input name="infor_email" type="email"  required></label> <br>
+                    *問題與意見:<br>
+                    <textarea name="infor_message" rows="6" required></textarea><br>
+                    <input type="submit" value="送出">
+                </form>
+            </div>
+        </div>
+
+        <div class="navigation-button">
+            <div class="navigation-button-open">選單</div>
+            <div class="navigation-button-close">關閉</div>
+            <div class="navigation-button-logo">
+                <div class="navigation-button-logo-bar1"></div>
+                <div class="navigation-button-logo-bar2"></div>
+                <div class="navigation-button-logo-bar3"></div>
+            </div>
+        </div>
+        <div class="navigation">
+            <div class="navigation-close-region"></div>
+            <div class="navigation-decoration-line"></div>
+            <div class="navigation-decoration-line"></div>
+            <div class="navigation-sidebar">
+                <div class="navigation-links">
+                    <div class="navigation-links-title">
+                        <div class="navigation-link"><a href="../index.html"><div class="navigation-links-underline">主頁</div></a></div>
+                        <div class="navigation-link"><a href="../pages/contactUs.html" class="current-site"><div class="navigation-links-underline">聯絡我們</div></a></div>    
+                    </div>
+                    <div class="navigation-links-campus">
+                        <div class="navigation-link"><a href="../pages/campusKF.html"><div class="navigation-links-underline">光復校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusCK.html"><div class="navigation-links-underline">成功校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusTC.html"><div class="navigation-links-underline">自強校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusLH.html"><div class="navigation-links-underline">力行校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusCH.html"><div class="navigation-links-underline">成杏校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusSL.html"><div class="navigation-links-underline">勝利校區</div></a></div>
+                        <div class="navigation-link"><a href="../pages/campusOTHER.html"><div class="navigation-links-underline">分校區</div></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="navigation-title"></div>
+        </div>
+
+    </body>
+
+    <script>
+
+        // --------------------------------------------------
+        // Navigation sidebar
+
+        const navigationButton = document.getElementsByClassName("navigation-button")[0];
+        const navigationButtonOpen = document.getElementsByClassName("navigation-button-open")[0];
+        const navigation = document.getElementsByClassName("navigation")[0];
+        const navigationCloseRegion = document.getElementsByClassName("navigation-close-region")[0];
+        const navigationSidebar = document.getElementsByClassName("navigation-sidebar")[0];
+        const navigationDecorationLine = document.getElementsByClassName("navigation-decoration-line");
+        const navigationButtonClose = document.getElementsByClassName("navigation-button-close")[0];
+        const navigationButtonLogo = document.getElementsByClassName("navigation-button-logo")[0];
+        const navigationTitle = document.getElementsByClassName("navigation-title")[0];
+
+        navigation.style.display = "none";
+        navigationCloseRegion.style.opacity = "0";
+        navigationCloseRegion.style.transition = "opacity 0.5s ease-in-out";
+        navigationSidebar.style.width = "0px";
+        // navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.4, 0, 1, 1)";
+        // navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+        // navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+        navigationButtonClose.style.display = "none";
+        navigationButtonClose.style.opacity = "0";
+        navigationButtonClose.style.transition = "opacity 0.5s ease-in-out";
+        navigationTitle.style.opacity = "0";
+        navigationTitle.style.transition = "opacity 0.5s ease-in-out";
+
+        function openNavigation(){
+            navigation.style.display = "block";
+            navigationButtonClose.style.display = "block";
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            setTimeout(() => {
+                navigationCloseRegion.style.opacity = "1";
+                navigationSidebar.style.width = "600px";
+                navigationDecorationLine[0].style.right = "605px";
+                navigationDecorationLine[1].style.right = "615px";
+                navigationButtonClose.style.opacity = "1";
+                navigationTitle.style.opacity = "1";
+            }, 10);
+        }
+
+        function closeNavigation(){
+            navigationSidebar.style.transition = "width 0.5s cubic-bezier(0, 0, 0.4, 1)";
+            navigationDecorationLine[0].style.transition = "right 0.5s cubic-bezier(0.6, 0, 0.4, 1)";
+            navigationDecorationLine[1].style.transition = "right 0.5s cubic-bezier(0.6, 0, 1, 1)";
+            navigationCloseRegion.style.opacity = "0";
+            navigationSidebar.style.width = "0px";
+            navigationDecorationLine[0].style.right = "0px";
+            navigationDecorationLine[1].style.right = "0px";
+            navigationButtonClose.style.opacity = "0";
+            navigationTitle.style.opacity = "0";
+            setTimeout(() => {
+                navigation.style.display = "none";
+                navigationButtonClose.style.display = "none";
+            }, 500);
+        }
+        navigationCloseRegion.addEventListener("click", closeNavigation);
+
+        function navigationToggle() {
+            if (navigation.style.display == "none") {
+                openNavigation();
+            }
+            else {
+                closeNavigation();
+            }
+            navigationButtonLogo.classList.toggle("navigation-button-logo_change");
+        }
+        navigationButton.addEventListener("click", navigationToggle);
+
+        // --------------------------------------------------
+        // Entering
+
+        const contactPic = document.getElementById("contact-pic");
+        contactPic.style.opacity = "0";
+        contactPic.style.transition = "opacity 1s ease-in-out";
+
+        const contactContainer = document.getElementById("contact-container");
+        contactContainer.style.opacity = "0";
+        contactContainer.style.transition = "opacity 1s ease-in-out";
+
+        navigationButton.style.opacity = "0";
+        navigationButton.style.transition = "opacity 1s ease-in-out";
+
+        setTimeout(() => {
+            contactPic.style.opacity = "1";
+            contactContainer.style.opacity = "1";
+            navigationButton.style.opacity = "1";
+        }, 0);
+
+        // --------------------------------------------------
+        // Leaving
+
+        document.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", event => {
+                event.preventDefault(); // Prevent immediate navigation
+                if (!link.classList.contains('current-site')) {
+                    const href = link.href;
+                    contactPic.style.opacity = "0";
+                    contactContainer.style.opacity = "0";
+                    navigationButton.style.opacity = "0";
+                    closeNavigation();
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 1500);
+                }
+            });
+        });
+
+    </script>
+
+</html>
